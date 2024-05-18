@@ -18,7 +18,7 @@ public abstract class BasePage {
     private final By newsButtonLocator = By.xpath("//div[contains(@class, 'f-container nav-secondary')]//a[contains(@href, '/hirek')]");
     private final By marketButtonLocator = By.xpath("//div[contains(@class, 'f-container nav-secondary')]//a[contains(@href, '/aprohirdetes')]");
     private final By forumButtonLocator = By.xpath("//div[contains(@class, 'f-container nav-secondary')]//a[contains(@href, '/forum')]");
-
+   
     protected WebDriver driver;
     private WebDriverWait wait;
 

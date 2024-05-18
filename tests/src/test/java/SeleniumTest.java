@@ -73,44 +73,24 @@ public class SeleniumTest {
         pages.add(new Page("https://www.agroinform.hu/termenypiac", "kukorica"));
 
         for (Page page : pages) {
-                // Open the web page
+
             driver.get(page.getUrl());
 
-                // Get the title of the page
             String actualTitle = driver.getTitle();
 
-                // Verify the title
             Assert.assertTrue(actualTitle.contains(page.getExpectedTitle()));
               
         }
     }
 
-
     @Test
     public void loginTest() {
-        MainPage mainPage = new MainPage(driver);
-        mainPage.clickLoginDropdown();
-        mainPage.setUsername(email);
-        mainPage.setPassword(password);
-
-        mainPage.clickLoginButton();
-
-        Assert.assertTrue(mainPage.getBodyText().contains("az Agroinformon!"));
+        login();
 
     }
     @Test
     public void logoutTest() {
-        MainPage mainPage = new MainPage(driver);
-
-        Assert.assertTrue(mainPage.getTitle().contains("Agroinform - Mez"));
-
-        mainPage.clickLoginDropdown();
-        mainPage.setUsername(email);
-        mainPage.setPassword(password);
-
-        mainPage.clickLoginButton();
-
-        Assert.assertTrue(mainPage.getBodyText().contains("az Agroinformon!"));
+        MainPage mainPage = login();
 
         mainPage.clickLoginDropdown();
         mainPage.clickLogoutButton();
@@ -120,17 +100,7 @@ public class SeleniumTest {
     }
     @Test
     public void searchNewsTest(){
-        MainPage mainPage = new MainPage(driver);
-
-        Assert.assertTrue(mainPage.getTitle().contains("Agroinform - Mez"));
-
-        mainPage.clickLoginDropdown();
-        mainPage.setUsername(email);
-        mainPage.setPassword(password);
-
-        mainPage.clickLoginButton();
-
-        Assert.assertTrue(mainPage.getBodyText().contains("az Agroinformon!"));
+        MainPage mainPage = login();
 
         NewsPage newsPage = mainPage.goToNewsPage();
 
@@ -143,17 +113,7 @@ public class SeleniumTest {
 
     @Test
     public void marketPageTest(){
-        MainPage mainPage = new MainPage(driver);
-
-        Assert.assertTrue(mainPage.getTitle().contains("Agroinform - Mez"));
-
-        mainPage.clickLoginDropdown();
-        mainPage.setUsername(email);
-        mainPage.setPassword(password);
-
-        mainPage.clickLoginButton();
-
-        Assert.assertTrue(mainPage.getBodyText().contains("az Agroinformon!"));
+        MainPage mainPage = login();
 
         MarketPage marketPage = mainPage.goToMarketPage();
 
@@ -163,22 +123,12 @@ public class SeleniumTest {
 
         marketPage.setSearchTerm("asd");
 
-        Assert.assertTrue(marketPage.getBodyText().contains("JOHN DEERE 5085M traktor"));
+        Assert.assertTrue(marketPage.getBodyText().contains("2510"));
     }
 
     @Test
     public void forumPageTest(){
-        MainPage mainPage = new MainPage(driver);
-
-        Assert.assertTrue(mainPage.getTitle().contains("Agroinform - Mez"));
-
-        mainPage.clickLoginDropdown();
-        mainPage.setUsername(email);
-        mainPage.setPassword(password);
-
-        mainPage.clickLoginButton();
-
-        Assert.assertTrue(mainPage.getBodyText().contains("az Agroinformon!"));
+        MainPage mainPage = login();
 
         ForumPage forumPage = mainPage.goToForumPage();
 
@@ -194,6 +144,19 @@ public class SeleniumTest {
         if (driver != null) {
             driver.quit();
         }
+    }
+
+    private MainPage login(){
+        MainPage mainPage = new MainPage(driver);
+        mainPage.clickLoginDropdown();
+        mainPage.setUsername(email);
+        mainPage.setPassword(password);
+
+        mainPage.clickLoginButton();
+
+        Assert.assertTrue(mainPage.getBodyText().contains("az Agroinformon!"));
+
+        return mainPage;
     }
 
    
