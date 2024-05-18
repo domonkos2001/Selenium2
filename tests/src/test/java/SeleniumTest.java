@@ -161,6 +161,8 @@ public class SeleniumTest {
 
         marketPage.clickSearch();
 
+        marketPage.setSearchTerm("asd");
+
         Assert.assertTrue(marketPage.getBodyText().contains("JOHN DEERE 5085M traktor"));
     }
 

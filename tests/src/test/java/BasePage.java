@@ -76,7 +76,7 @@ public abstract class BasePage {
     }
 
     public ForumPage goToForumPage(){
-        waitAndReturnElement(newsButtonLocator).click();
+        waitAndReturnElement(forumButtonLocator).click();
 
         return new ForumPage(driver);
 
