@@ -14,7 +14,7 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
+import java.util.Random;
 import java.util.ArrayList; 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -88,6 +88,18 @@ public class SeleniumTest {
         login();
 
     }
+
+    @Test
+    public void loginWrongPasswordTest() {
+        MainPage mainPage = new MainPage(driver);
+        mainPage.clickLoginDropdown();
+        mainPage.setUsername(email);
+        mainPage.setPassword(randomPassword());
+        mainPage.clickLoginButton();
+        Assert.assertTrue(mainPage.wrongPasswordAllertIsPresent());
+
+    }
+
     @Test
     public void logoutTest() {
         MainPage mainPage = login();
@@ -96,7 +108,8 @@ public class SeleniumTest {
         mainPage.clickLogoutButton();
 
         Assert.assertTrue(mainPage.getBodyText().contains("BEJELENTKEZ"));
-
+        
+        
     }
     @Test
     public void searchNewsTest(){
@@ -121,9 +134,7 @@ public class SeleniumTest {
 
         marketPage.clickSearch();
 
-        marketPage.setSearchTerm("asd");
-
-        Assert.assertTrue(marketPage.getBodyText().contains("2510"));
+        Assert.assertTrue(marketPage.traktorHrefIsPresent());
     }
 
     @Test
@@ -139,6 +150,34 @@ public class SeleniumTest {
         Assert.assertTrue(forumPage.getBodyText().contains("gyomirt"));
     }
 
+    @Test
+    public void navigateBackTest(){
+        MainPage mainPage = login();
+
+        Assert.assertTrue(driver.getCurrentUrl().equals("https://www.agroinform.hu/kezdooldal"));
+        
+        ForumPage forumPage = mainPage.goToForumPage();
+
+        Assert.assertTrue(driver.getCurrentUrl().equals("https://www.agroinform.hu/forum"));
+
+        driver.navigate().back();
+
+        Assert.assertTrue(driver.getCurrentUrl().equals("https://www.agroinform.hu/kezdooldal"));
+
+    }
+
+    @Test
+    public void newMachineAdvertisementPageTest(){
+        
+        MainPage mainPage = login();
+
+        mainPage.clickLoginDropdown();
+
+        NewMachineAdvertisement newMachineAdvertisementPage  = mainPage.goToAdvertisementPage().goToNewAdvertisementPage().goToNewMachineAdvertisementPage();
+
+        Assert.assertTrue(newMachineAdvertisementPage.getBodyText().contains("ALAPADATAI"));
+    }
+    
     @After
     public void close() {
         if (driver != null) {
@@ -157,6 +196,18 @@ public class SeleniumTest {
         Assert.assertTrue(mainPage.getBodyText().contains("az Agroinformon!"));
 
         return mainPage;
+    }
+
+    private String randomPassword(){
+        StringBuilder sb = new StringBuilder();
+        Random rand = new Random();
+        for(int i=0; i< 10; i++){
+            int random_char = rand.nextInt((122 - 97) + 1) + 97;
+            sb.append(((char) random_char));
+        }
+
+        return sb.toString();
+
     }
 
    

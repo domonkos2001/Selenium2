@@ -11,7 +11,7 @@ import java.net.URL;
 public class MarketPage extends BasePage {
 
     private final By searchBarLocator = By.xpath("//input[contains(@placeholder,'Mit keresel?')]");
-
+    private final By traktorHrefLocator = By.xpath("//a[contains(@href, '/aprohirdetes/Traktor/s?skip_redirect=1')]");
     private final By searchButtonLocator = By.xpath("//div[contains(@class, 'container primary-border-container marketplace-search-additions')]//button[contains(@type,'submit')]");
 
 
@@ -25,6 +25,10 @@ public class MarketPage extends BasePage {
 
     public void clickSearch(){
         waitAndReturnElement(searchButtonLocator).click();
+    }
+
+    public boolean traktorHrefIsPresent(){
+        return elementIsPresent(traktorHrefLocator);
     }
 
 

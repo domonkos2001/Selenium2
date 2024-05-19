@@ -4,7 +4,7 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-
+import org.openqa.selenium.TimeoutException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -18,7 +18,8 @@ public abstract class BasePage {
     private final By newsButtonLocator = By.xpath("//div[contains(@class, 'f-container nav-secondary')]//a[contains(@href, '/hirek')]");
     private final By marketButtonLocator = By.xpath("//div[contains(@class, 'f-container nav-secondary')]//a[contains(@href, '/aprohirdetes')]");
     private final By forumButtonLocator = By.xpath("//div[contains(@class, 'f-container nav-secondary')]//a[contains(@href, '/forum')]");
-   
+    private final By wrongPwLocator = By.xpath("//div[contains(@id, 'login_tab1')]//div[contains(text(), 'felhaszn')]");
+    private final By advertisementButtonLocator = By.xpath("//div[contains(@class, 'dropdown d-inline userbox logged_in show')]//a[contains(@href, '/hirdetes_kezeles')]");
     protected WebDriver driver;
     private WebDriverWait wait;
 
@@ -32,6 +33,15 @@ public abstract class BasePage {
     protected WebElement waitAndReturnElement(By locator){
         wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
         return driver.findElement(locator);
+    }
+
+    protected boolean elementIsPresent(By locator){
+        try{
+            waitAndReturnElement(locator);
+            return true;
+        }catch(TimeoutException  e){
+            return false;
+        }
     }
 
     public String getTitle(){
@@ -79,7 +89,17 @@ public abstract class BasePage {
         waitAndReturnElement(forumButtonLocator).click();
 
         return new ForumPage(driver);
-
     }
+
+    public boolean wrongPasswordAllertIsPresent(){
+        return elementIsPresent(wrongPwLocator);
+    }
+
+    public AdvertisementPage goToAdvertisementPage(){
+        waitAndReturnElement(advertisementButtonLocator).click();
+
+        return new AdvertisementPage(driver);
+    }
+
 
 }
